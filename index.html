@@ -39,22 +39,49 @@
       #controls {
         display: none; /* Escondido por padrão, aparece só em mobile */
         margin-top: 20px;
+        position: relative;
+        width: 180px;
+        height: 180px;
       }
       .control-btn {
-        width: 60px;
-        height: 60px;
-        margin: 5px;
+        width: 50px;
+        height: 50px;
         font-size: 18px;
         background-color: #ccc;
         border: 2px solid #000;
-        border-radius: 5px;
+        border-radius: 50%;
         cursor: pointer;
+        position: absolute;
+      }
+      #btnUp {
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      #btnDown {
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      #btnLeft {
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+      }
+      #btnRight {
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+      }
+      #btnCenter {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #aaa;
       }
       @media (max-width: 600px) {
         #controls {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
+          display: block;
         }
       }
       .game-over {
@@ -85,14 +112,33 @@
     <div id="score">Pontuação: 0</div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div id="controls">
-      <button class="control-btn" onclick="changeDirection('up')">↑</button>
-      <div>
-        <button class="control-btn" onclick="changeDirection('left')">←</button>
-        <button class="control-btn" onclick="changeDirection('right')">
-          →
-        </button>
-      </div>
-      <button class="control-btn" onclick="changeDirection('down')">↓</button>
+      <button id="btnUp" class="control-btn" onclick="changeDirection('up')">
+        ↑
+      </button>
+      <button
+        id="btnLeft"
+        class="control-btn"
+        onclick="changeDirection('left')"
+      >
+        ←
+      </button>
+      <button id="btnCenter" class="control-btn" onclick="resetGame()">
+        ●
+      </button>
+      <button
+        id="btnRight"
+        class="control-btn"
+        onclick="changeDirection('right')"
+      >
+        →
+      </button>
+      <button
+        id="btnDown"
+        class="control-btn"
+        onclick="changeDirection('down')"
+      >
+        ↓
+      </button>
     </div>
     <div id="highScores">
       <h3>Maiores Pontuações</h3>
@@ -113,7 +159,7 @@
       let dx = 0;
       let dy = 0;
       let score = 0;
-      let speed = 100; // Velocidade inicial (ms por frame)
+      let speed = 150; // Velocidade inicial (ms por frame) - mais lenta
       let highScores =
         JSON.parse(localStorage.getItem("snakeHighScores")) || [];
       let gameOver = false;
@@ -158,7 +204,7 @@
           scoreDisplay.textContent = `Pontuação: ${score}`;
           foodAnimation = true; // Ativa a animação da comida
           generateFood();
-          speed = Math.max(50, speed - 5); // Aumenta a velocidade
+          speed = Math.max(70, speed - 3); // Aumenta a velocidade mais gradualmente
         } else {
           snake.pop(); // Remove a cauda se não comeu
         }
@@ -261,11 +307,12 @@
 
       // Reseta o jogo
       function resetGame() {
+        canvas.classList.remove("game-over");
         snake = [{ x: 10, y: 10 }];
         dx = 0;
         dy = 0;
         score = 0;
-        speed = 100;
+        speed = 150; // Ajustado para a nova velocidade inicial
         scoreDisplay.textContent = `Pontuação: ${score}`;
         generateFood();
       }
