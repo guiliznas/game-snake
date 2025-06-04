@@ -39,22 +39,36 @@
       #controls {
         display: none; /* Escondido por padrão, aparece só em mobile */
         margin-top: 20px;
+        width: 200px;
+      }
+      .controls-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        gap: 5px;
+        width: 200px;
+        height: 200px;
+        margin: 0 auto;
       }
       .control-btn {
         width: 60px;
         height: 60px;
-        margin: 5px;
         font-size: 18px;
         background-color: #ccc;
         border: 2px solid #000;
         border-radius: 5px;
         cursor: pointer;
       }
+      .grid-empty {
+        background: transparent;
+        border: none;
+        cursor: default;
+      }
       @media (max-width: 600px) {
         #controls {
           display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
+          flex-direction: column;
+          align-items: center;
         }
       }
       .game-over {
@@ -85,14 +99,17 @@
     <div id="score">Pontuação: 0</div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div id="controls">
-      <button class="control-btn" onclick="changeDirection('up')">↑</button>
-      <div>
+      <div class="controls-grid">
+        <button class="control-btn grid-empty" disabled></button>
+        <button class="control-btn" onclick="changeDirection('up')">↑</button>
+        <button class="control-btn grid-empty" disabled></button>
         <button class="control-btn" onclick="changeDirection('left')">←</button>
-        <button class="control-btn" onclick="changeDirection('right')">
-          →
-        </button>
+        <button class="control-btn grid-empty" disabled></button>
+        <button class="control-btn" onclick="changeDirection('right')">→</button>
+        <button class="control-btn grid-empty" disabled></button>
+        <button class="control-btn" onclick="changeDirection('down')">↓</button>
+        <button class="control-btn grid-empty" disabled></button>
       </div>
-      <button class="control-btn" onclick="changeDirection('down')">↓</button>
     </div>
     <div id="highScores">
       <h3>Maiores Pontuações</h3>
